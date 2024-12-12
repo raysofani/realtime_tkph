@@ -30,7 +30,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
         }
         .form-grid {
             display: grid;
@@ -73,14 +73,25 @@
             color: #7f8c8d;
             margin-bottom: 20px;
         }
+        .section-header {
+            grid-column: span 2;
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        .info-tooltip {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="calculator-container">
-        <h1>TKPH Calculator for Dumper {{ dumper_id }} - {{ tyre_position }}</h1>
+        <h1> TKPH Calculator for Dumper {{ dumper_id }} - {{ tyre_position }}</h1>
         
         <div class="info-text">
-            Calculate Tons Kilometers Per Hour (TKPH) for your mining equipment tyre
+            Calculate Tons Kilometers Per Hour (TKPH) with  Load and Distance Tracking
         </div>
         
         {% if error %}
@@ -89,14 +100,52 @@
         
         <form method="POST">
             <div class="form-grid">
+                <h2 class="section-header">Cycle Time and Distance Parameters</h2>
+                
                 <div class="form-group">
-                    <label>Distance Loaded (km)</label>
-                    <input type="number" name="distance_loaded" step="0.01" required placeholder="Enter distance traveled when loaded">
+                    <label>Total Cycle Time (minutes)</label>
+                    <input type="number" name="total_cycle_time" step="0.01" required placeholder="Total round trip cycle time">
+                    <div class="info-tooltip">Total time for round trip including loading/unloading</div>
                 </div>
+                
                 <div class="form-group">
-                    <label>Cycle Time (hours)</label>
-                    <input type="number" name="cycle_time" step="0.01" required placeholder="Enter total cycle time">
+                    <label>Loaded Truck Travel Time (minutes)</label>
+                    <input type="number" name="loaded_truck_time" step="0.01" required placeholder="Time truck is loaded">
+                    <div class="info-tooltip">Time spent traveling with full load</div>
                 </div>
+                
+                <div class="form-group">
+                    <label>Empty Truck Travel Time (minutes)</label>
+                    <input type="number" name="empty_truck_time" step="0.01" required placeholder="Time truck travels empty">
+                    <div class="info-tooltip">Time spent traveling without load</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Loaded Round Trip Distance (km)</label>
+                    <input type="number" name="loaded_round_trip_distance" step="0.01" required placeholder="Distance traveled when loaded">
+                    <div class="info-tooltip">Total distance traveled during loaded portion of trip</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Empty Round Trip Distance (km)</label>
+                    <input type="number" name="empty_round_trip_distance" step="0.01" required placeholder="Distance traveled when empty">
+                    <div class="info-tooltip">Total distance traveled during empty portion of trip</div>
+                </div>
+                
+                <h2 class="section-header">Tyre Weight and Load Parameters</h2>
+                
+                <div class="form-group">
+                    <label>Empty Truck Tyre Weight (kg)</label>
+                    <input type="number" name="empty_truck_tyre_weight" step="0.01" required placeholder="Tyre weight when truck is empty">
+                    <div class="info-tooltip">Tyre weight during empty truck travel</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Loaded Truck Tyre Weight (kg)</label>
+                    <input type="number" name="loaded_truck_tyre_weight" step="0.01" required placeholder="Tyre weight when truck is fully loaded">
+                    <div class="info-tooltip">Tyre weight during loaded truck travel</div>
+                </div>
+                
                 <div class="form-group">
                     <label>Terrain Type</label>
                     <select name="terrain_type" required>
@@ -105,33 +154,28 @@
                         <option value="Rocky">Rocky</option>
                         <option value="Muddy">Muddy</option>
                     </select>
+                    <div class="info-tooltip">Type of terrain for the round trip</div>
                 </div>
+                
                 <div class="form-group">
                     <label>Tire Wear Percentage</label>
                     <input type="number" name="tire_wear_percentage" min="0" max="100" step="0.1" required placeholder="0-100%">
+                    <div class="info-tooltip">Current tire wear condition</div>
                 </div>
+                
                 <div class="form-group">
-                    <label>Tyre Load Empty (kg)</label>
-                    <input type="number" name="tyre_load_empty" step="0.01" required placeholder="Tyre weight when empty">
+                    <label>Average Cycles per Shift</label>
+                    <input type="number" name="cycles_per_shift" required placeholder="Number of complete round trips per shift">
+                    <div class="info-tooltip">Total round trips completed in a work shift</div>
                 </div>
-                <div class="form-group">
-                    <label>Tyre Load Fully Loaded (kg)</label>
-                    <input type="number" name="tyre_load_fully_loaded" step="0.01" required placeholder="Tyre weight when fully loaded">
-                </div>
-                <div class="form-group">
-                    <label>Round Trip Distances (comma-separated)</label>
-                    <input type="text" name="round_trip_distances" placeholder="e.g. 5.5, 6.2, 5.8" required>
-                </div>
-                <div class="form-group">
-                    <label>Cycles per Shift</label>
-                    <input type="number" name="cycles_per_shift" required placeholder="Number of trips per shift">
-                </div>
+                
                 <div class="form-group">
                     <label>Total Shift Hours</label>
                     <input type="number" name="total_shift_hours" step="0.01" required placeholder="Total working hours per shift">
+                    <div class="info-tooltip">Total duration of work shift</div>
                 </div>
             </div>
-            <button type="submit" class="submit-btn">Calculate TKPH</button>
+            <button type="submit" class="submit-btn">Calculate  TKPH</button>
         </form>
     </div>
 </body>

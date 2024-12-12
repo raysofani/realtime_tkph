@@ -66,30 +66,35 @@ def calculate_average_speed(round_trip_distances, cycles_per_shift, total_shift_
     average_speed = (mean_distance * cycles_per_shift) / total_shift_hours
     return average_speed
 
-# Function to calculate TKPH
-def calculate_tkph(distance_loaded, cycle_time, terrain_type, tire_wear_percentage,
-                   tyre_load_empty, tyre_load_fully_loaded, round_trip_distances, 
+# Modify the calculate_tkph function in app.py
+def calculate_tkph(total_cycle_time, loaded_truck_time, empty_truck_time,
+                   loaded_round_trip_distance, empty_round_trip_distance,
+                   empty_truck_tyre_weight, loaded_truck_tyre_weight,
+                   terrain_type, tire_wear_percentage, 
                    cycles_per_shift, total_shift_hours):
-    # Calculate mean tire load
-    mean_tyre_load = calculate_mean_tyre_load(tyre_load_empty, tyre_load_fully_loaded)
+    
+    # Calculate Mean Load based on time-weighted method
+    mean_load = ((loaded_truck_tyre_weight * loaded_truck_time) + 
+                 (empty_truck_tyre_weight * empty_truck_time)) / total_cycle_time
+    
+    # Calculate Total Round Trip Distance
+    total_round_trip_distance = loaded_round_trip_distance + empty_round_trip_distance
     
     # Calculate average speed
-    average_speed = calculate_average_speed(round_trip_distances, cycles_per_shift, total_shift_hours)
+    average_speed = (total_round_trip_distance * cycles_per_shift) / total_shift_hours
     
     # Terrain and wear adjustments
     terrain_factor = TERRAIN_FACTORS.get(terrain_type, 1.0)
-    tire_damage_factor = get_tire_damage_factor(min(tire_wear_percentage, 100))  # Cap wear percentage at 100
+    tire_damage_factor = get_tire_damage_factor(min(tire_wear_percentage, 100))
     
-    # Base TKPH
-    tkph_base = (mean_tyre_load * distance_loaded) / cycle_time
+    # Base TKPH calculation (using total round trip distance)
+    tkph_base = (mean_load * total_round_trip_distance) / (total_cycle_time / 60)  # Convert to hours
     
     # Adjust for terrain and wear
     tkph_adjusted = tkph_base * terrain_factor * tire_damage_factor
     
-    # Final TKPH (without unnecessary speed multiplier)
+    # Apply final adjustments if needed
     tkph_final = tkph_adjusted
-    
-    # Suitable TKPH (base calculation without terrain and wear adjustments)
     suitable_tkph = tkph_base
     
     return tkph_final, suitable_tkph
@@ -210,6 +215,7 @@ def tyre_selection():
     dumper_id = request.args.get('dumper_id')
     return render_template('tyre_selection.html', dumper_id=dumper_id)
 
+# Update the tkph-calculator route in app.py to use new parameters
 @app.route('/tkph-calculator', methods=['GET', 'POST'])
 def tkph_calculator():
     dumper_id = request.args.get('dumper_id')
@@ -217,23 +223,29 @@ def tkph_calculator():
     
     if request.method == 'POST':
         try:
-            # Collect input values
-            distance_loaded = float(request.form['distance_loaded'])
-            cycle_time = float(request.form['cycle_time'])
+            # Collect input values using new parameters
+            total_cycle_time = float(request.form['total_cycle_time'])
+            loaded_truck_time = float(request.form['loaded_truck_time'])
+            empty_truck_time = float(request.form['empty_truck_time'])
+            
+            loaded_round_trip_distance = float(request.form['loaded_round_trip_distance'])
+            empty_round_trip_distance = float(request.form['empty_round_trip_distance'])
+            
+            empty_truck_tyre_weight = float(request.form['empty_truck_tyre_weight'])
+            loaded_truck_tyre_weight = float(request.form['loaded_truck_tyre_weight'])
+            
             terrain_type = request.form['terrain_type']
             tire_wear_percentage = float(request.form['tire_wear_percentage'])
-            tyre_load_empty = float(request.form['tyre_load_empty'])
-            tyre_load_fully_loaded = float(request.form['tyre_load_fully_loaded'])
             
-            # Process round trip distances
-            round_trip_distances = [float(x.strip()) for x in request.form['round_trip_distances'].split(',')]
             cycles_per_shift = int(request.form['cycles_per_shift'])
             total_shift_hours = float(request.form['total_shift_hours'])
             
-            # Calculate TKPH
+            # Calculate TKPH using new method
             tkph_final, suitable_tkph = calculate_tkph(
-                distance_loaded, cycle_time, terrain_type, tire_wear_percentage,
-                tyre_load_empty, tyre_load_fully_loaded, round_trip_distances, 
+                total_cycle_time, loaded_truck_time, empty_truck_time,
+                loaded_round_trip_distance, empty_round_trip_distance,
+                empty_truck_tyre_weight, loaded_truck_tyre_weight,
+                terrain_type, tire_wear_percentage,
                 cycles_per_shift, total_shift_hours
             )
             
