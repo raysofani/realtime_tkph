@@ -23,18 +23,54 @@
             background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .container {
+        .notes {
+            position: absolute;
+            top: 50%;
+            justify-content: center;
+        
+    
+         right: 10em;
+         font-size: large;
+         transform: translateY(-50%);
+         width: 300px;
+         height: 30%;
+         background-color: #ffffff;
+         padding: 10px;
+         border-radius: 8px 0 0 8px;
+         
+         box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+            }
+           .brand {
+               font-size: 5.5rem;
+               font-weight: 700;
+               color: #3498db;
+               margin-bottom: 50px;
+               
+               
+               margin-top: -50px;
+               text-transform: uppercase;
+               letter-spacing: 2px;
+               text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+           }
+           .container {
             background: var(--card-background);
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 40px;
+            display: flex;
+            
+            flex-direction: column;
+          
             width: 100%;
             max-width: 900px;
+            float: left;
         }
+       
         .payload-section {
             display: flex;
             justify-content: space-between;
@@ -126,11 +162,23 @@
             background-color: var(--secondary-color);
             color: white;
         }
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            grid-column: span 2;
+            justify-self: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+    <div class="brand"> SMART TYRE PULSE</div>
     <div class="container">
-        <h1>Payload Distribution and Loading Tracking</h1>
+        <h1 style="color:#3498db">Payload Distribution and Load Tracking</h1>
         
         <div class="payload-section">
             <div class="payload-input">
@@ -180,6 +228,13 @@
         </div>
 
         <button id="next-button" class="submit-btn" onclick="window.location.href='/tyre-selection'">Next</button>
+    </div>
+    <div class="notes">
+        <p><strong>Note:</strong> Payload distribution<br><br>
+            Front tyre: 35%  (17.5% each) <br> <br>
+            Rear tyre : 65%  (16.25% each).
+            
+            </p>
     </div>
 
     <script>
