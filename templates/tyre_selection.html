@@ -34,7 +34,7 @@
         }
         .tyre-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
         .tyre-card {
@@ -59,6 +59,11 @@
         }
         @media (max-width: 768px) {
             .tyre-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .tyre-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -73,17 +78,24 @@
                 <div class="tyre-details">Position: 1 (Front Right)</div>
             </a>
             <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=front-left" class="tyre-card">
-                <div class="tyre-position">Front left Tyre</div>
-                <div class="tyre-details">Position: 2 (Front left)</div>
+                <div class="tyre-position">Front Left Tyre</div>
+                <div class="tyre-details">Position: 2 (Front Left)</div>
             </a>
-            
-            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-right" class="tyre-card">
-                <div class="tyre-position">Rear Right Tyre</div>
-                <div class="tyre-details">Position: 3 (Rear Right)</div>
+            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-right-outer" class="tyre-card">
+                <div class="tyre-position">Rear Right Outer Tyre</div>
+                <div class="tyre-details">Position: 3 (Rear Right Outer)</div>
             </a>
-            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-right" class="tyre-card">
-                <div class="tyre-position">Rear left Tyre</div>
-                <div class="tyre-details">Position: 4 (Rear left)</div>
+            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-left-outer" class="tyre-card">
+                <div class="tyre-position">Rear Left Outer Tyre</div>
+                <div class="tyre-details">Position: 4 (Rear Left Outer)</div>
+            </a>
+            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-right-inner" class="tyre-card">
+                <div class="tyre-position">Rear Right Inner Tyre</div>
+                <div class="tyre-details">Position: 5 (Rear Right Inner)</div>
+            </a>
+            <a href="/tkph-calculator?dumper_id={{ dumper_id }}&tyre_position=rear-left-inner" class="tyre-card">
+                <div class="tyre-position">Rear Left Inner Tyre</div>
+                <div class="tyre-details">Position: 6 (Rear Left Inner)</div>
             </a>
         </div>
     </div>

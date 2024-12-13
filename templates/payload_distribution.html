@@ -161,13 +161,21 @@
                 <h4>Front Right Tyre</h4>
                 <p id="front-right-load">0 kg</p>
             </div>
-            <div class="tyre-card" id="rear-left-tyre">
-                <h4>Rear Left Tyre</h4>
-                <p id="rear-left-load">0 kg</p>
+            <div class="tyre-card" id="rear-left-outer-tyre">
+                <h4>Rear Left Outer Tyre</h4>
+                <p id="rear-left-outer-load">0 kg</p>
             </div>
-            <div class="tyre-card" id="rear-right-tyre">
-                <h4>Rear Right Tyre</h4>
-                <p id="rear-right-load">0 kg</p>
+            <div class="tyre-card" id="rear-right-outer-tyre">
+                <h4>Rear Right Outer Tyre</h4>
+                <p id="rear-right-outer-load">0 kg</p>
+            </div>
+            <div class="tyre-card" id="rear-left-inner-tyre">
+                <h4>Rear Left Inner Tyre</h4>
+                <p id="rear-left-inner-load">0 kg</p>
+            </div>
+            <div class="tyre-card" id="rear-right-inner-tyre">
+                <h4>Rear Right Inner Tyre</h4>
+                <p id="rear-right-inner-load">0 kg</p>
             </div>
         </div>
 
@@ -183,8 +191,10 @@
         const tyreLoads = {
             'front-left': document.getElementById('front-left-load'),
             'front-right': document.getElementById('front-right-load'),
-            'rear-left': document.getElementById('rear-left-load'),
-            'rear-right': document.getElementById('rear-right-load')
+            'rear-left-outer': document.getElementById('rear-left-outer-load'),
+            'rear-right-outer': document.getElementById('rear-right-outer-load'),
+            'rear-left-inner': document.getElementById('rear-left-inner-load'),
+            'rear-right-inner': document.getElementById('rear-right-inner-load')
         };
 
         // Parking brake and loading status elements
@@ -203,12 +213,14 @@
         function updatePayloadDistribution() {
             const totalPayload = parseFloat(totalPayloadInput.value);
             
-            // Updated distribution: 35% front (17.5% each), 65% rear (32.5% each)
+            // Updated distribution: 35% front (17.5% each), 65% rear (16.25% each tyre)
             const distributions = {
-                'front-left': 0.175,   // 17.5% of total payload
-                'front-right': 0.175,  // 17.5% of total payload
-                'rear-left': 0.325,    // 32.5% of total payload
-                'rear-right': 0.325    // 32.5% of total payload
+                'front-left': 0.175,    // 17.5% of total payload
+                'front-right': 0.175,   // 17.5% of total payload
+                'rear-left-outer': 0.1625,  // 16.25% of total payload
+                'rear-right-outer': 0.1625, // 16.25% of total payload
+                'rear-left-inner': 0.1625,  // 16.25% of total payload
+                'rear-right-inner': 0.1625  // 16.25% of total payload
             };
 
             Object.keys(distributions).forEach(tyre => {
